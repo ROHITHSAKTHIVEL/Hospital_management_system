@@ -46,3 +46,16 @@ func Appoitment(profile models.Appoitment) {
 	}
 	fmt.Println("Inserted", inserted.InsertedID)
 }
+func Login(profile models.Login) error {
+	fmt.Println("service")
+	var ctx context.Context
+  //  var login models.Login
+	query := bson.M{"email": profile.Email, "password": profile.Password}
+	var customer models.Customer
+	err := config.Customer_ProfileCollection.FindOne(ctx,query).Decode(&customer)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return err
+	
+}

@@ -20,3 +20,8 @@ type Appoitment struct {
 	Date        string `json:"date,omitempty"`
 	Time        string `json:"time,omitempty"`
 }
+
+type Login struct {
+	Email    string `json:"email,omitempty"`
+	Password string `json:"password,omitempty"`
+}

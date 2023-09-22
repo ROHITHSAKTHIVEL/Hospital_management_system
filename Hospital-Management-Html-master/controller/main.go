@@ -44,3 +44,23 @@ func Appoitment(c *gin.Context) {
 	service.Appoitment(profile)
 	c.JSON(http.StatusOK, profile)
 }
+
+func Login (c *gin.Context){
+	fmt.Println("Checking Profile")
+	var profile models.Login
+	fmt.Println("Created")
+	if err := c.BindJSON(&profile); err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON data"})
+		return
+	}
+	fmt.Println("json binded")
+	fmt.Println(profile)
+	err:=service.Login(profile)
+	fmt.Println(err)
+	if err ==nil {
+		c.JSON(http.StatusOK, profile)
+	}
+	c.JSON(http.StatusBadRequest, err)
+	
+}

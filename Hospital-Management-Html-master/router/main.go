@@ -13,6 +13,8 @@ func Router() *gin.Engine {
 	router.GET("/getalldata", controller.Getalldata)
 	router.POST("/create", controller.CreateProfile)
 	router.POST("/appoitnment", controller.Appoitment)
+	router.POST("/login",controller.Login)
+
 
 	return router
 }

@@ -176,34 +176,36 @@
 					<div class="container content">
 					<div class="row">
 					<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-					<form class="reg-page">
-					<div class="reg-header">
-					<h2>Login to your account</h2>
-					</div>
-
-					<div class="input-group " style="margin-bottom: 20px;">
-					<span class="input-group-addon"><i class="fa fa-user"></i></span>
-					<input type="Email" name="userid" placeholder="Email Address" class="form-control" required="">
-					</div>
-					<div class="input-group " style="margin-bottom: 20px;">
-					<span class="input-group-addon"><i class="fa fa-lock"></i></span>
-					<input type="password" name="usrpsw" placeholder="Password" class="form-control" required="">
-					</div>
-
-					<div class="row">
-					<div class="col-md-6 checkbox">
-					<label><input type="checkbox"> Stay signed in</label>
-					</div>
-					<div class="col-md-6">
-					<button class="btn-u pull-right" type="submit" onclick="userlogin(form)">Login</button>
-					</div>
-					</div>
-
-					<hr>
-
-					<h4>Forget your Password ?</h4>
-					<p>no worries, <a class="color-green" href="#">click here</a> to reset your password.</p>
-					</form>
+						<form class="reg-page">
+							<div class="reg-header">
+								<h2>Login to your account</h2>
+							</div>
+					
+							<div class="input-group" style="margin-bottom: 20px;">
+								<span class="input-group-addon"><i class="fa fa-user"></i></span>
+								<input type="email" id="email" name="userid" placeholder="Email Address" class="form-control" required>
+							</div>
+					
+							<div class="input-group" style="margin-bottom: 20px;">
+								<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+								<input type="password" id="password" name="usrpsw" placeholder="Password" class="form-control" required>
+							</div>
+					
+							<div class="row">
+								<div class="col-md-6 checkbox">
+									<label><input type="checkbox"> Stay signed in</label>
+								</div>
+								<div class="col-md-6">
+									<!-- Use a button element instead of onclick on the submit button -->
+									<button class="btn-u pull-right" type="button" id="loginButton">Login</button>
+								</div>
+							</div>
+					
+							<hr>
+					
+							<h4>Forget your Password ?</h4>
+							<p>No worries, <a class="color-green" href="#">click here</a> to reset your password.</p>
+						</form>
 					</div>
 					</div><!--/row-->
 					</div><!--/container-->
@@ -325,6 +327,42 @@
 
 <!-- Login Javascript -->
 <script type="text/javascript" src="assets/plugins/jquery/validation.js"></script>
+
+<script>
+	// JavaScript to handle form submission
+	document.getElementById("loginButton").addEventListener("click", function () {
+		// Get the values of the email and password input fields
+		const email = document.getElementById("email").value;
+		const password = document.getElementById("password").value;
+
+		// Create a JSON object with email and password fields
+		const formData = {
+			email: email,
+			password: password,
+		};
+
+		// Send a POST request to your Go backend
+		fetch("/login", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(formData),
+		})
+		.then(response => response.json())
+		.then(data => {
+			// Handle the response from the backend, e.g., show a success message or redirect to another page
+			alert("Login successful!");
+			// You can add further logic here, like redirecting to a dashboard page
+		})
+		.catch(error => {
+			// Handle errors, e.g., display an error message
+			alert("Error during login: " + error.message);
+		});
+	});
+</script>
+
+
 
 </body>
 </html>
