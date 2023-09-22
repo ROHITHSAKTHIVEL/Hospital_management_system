@@ -8,9 +8,11 @@ import (
 
 func Router() *gin.Engine {
 	router := gin.Default()
+	//router.Static("/static", ".index.html")
 	router.Static("/static", "./")
 	router.GET("/getalldata", controller.Getalldata)
 	router.POST("/create", controller.CreateProfile)
+	router.POST("/appoitnment", controller.Appoitment)
 
 	return router
 }

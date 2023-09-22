@@ -31,6 +31,15 @@ func Getalldata() []primitive.M {
 }
 
 func Insert(profile models.Customer) {
+
+	inserted, err := config.Customer_ProfileCollection.InsertOne(context.Background(), profile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Inserted", inserted.InsertedID)
+}
+
+func Appoitment(profile models.Appoitment) {
 	inserted, err := config.Customer_Collection.InsertOne(context.Background(), profile)
 	if err != nil {
 		log.Fatal(err)

@@ -174,18 +174,18 @@
 	<div class="headline"><h2>Appointment Form</h2></div>
 
 				<!--=== APPOINTMENT FORM ===-->
-				<form onsubmit="showMsg(0);return false;" method="post" class="sky-form sky-changes-3">
+				<form id="appoitmentForm" onsubmit="showMsg(0);return false;" method="post" class="sky-form sky-changes-3">
 				<fieldset>
 				<div class="row">
 				<section class="col col-6">
-				<label class="label">Name</label>
+				<label for="name" class="label">Name</label>
 				<label class="input">
 				<i class="icon-append fa fa-user"></i>
-				<input type="text" name="name" id="name" required="">
+				<input type="text"  name="name" id="name" required="">
 				</label>
 				</section>
 				<section class="col col-6">
-				<label class="label">E-mail</label>
+				<label for="email" class="label">E-mail</label>
 				<label class="input">
 				<i class="icon-append fa fa-envelope-o"></i>
 				<input type="email" name="email" id="email" required="">
@@ -194,15 +194,15 @@
 				</div>
 
 				<section>
-				<label class="label">Purpose Of Appointment</label>
+				<label for="purpose" class="label">Purpose Of Appointment</label>
 				<label class="input">
 				<i class="icon-append fa fa-tag"></i>
-				<input type="text" name="subject" required="">
+				<input type="text" id="purpose"name="subject" required="">
 				</label>
 				</section>
 
 				<section>
-				<label class="label">Mobile Number</label>
+				<label id="phone"class="label">Mobile Number</label>
 				<label class="input">
 				<i class="icon-append fa fa-phone"></i>
 				<input type="text" name="number" id="number" required="">
@@ -210,28 +210,30 @@
 				</section> 	
 
 				<section>
-				<label class="select">
-				<select name="Department" required="">
-				<option value="" selected="" disabled="">Select Department</option>
-				<option>Cardiology</option>
-				<option>Dermatology and Cosmetology</option>
-				<option>General Surgery</option>
-				<option>Health Checkup Packages</option>
-				<option>Neurology</option>
-				</select>
-				<i></i>
-				</label>
+					<label for="dep" class="label">Select Department</label>
+					<label class="select">
+						<i class="icon-append fa fa-chevron-down"></i>
+						<select name="Department" id="departmentSelect" required>
+							<option value="" selected disabled>Select Department</option>
+							<option value="Cardiology">Cardiology</option>
+							<option value="Dermatology and Cosmetology">Dermatology and Cosmetology</option>
+							<option value="General Surgery">General Surgery</option>
+							<option value="Health Checkup Packages">Health Checkup Packages</option>
+							<option value="Neurology">Neurology</option>
+						</select>
+					</label>
 				</section>
+				
 				<div class="row">
 				<section class="col col-6">
-				<label class="date">Select Date</label>
+				<label id="date" class="date">Select Date</label>
 				<label class="input">
 				<i class="icon-append fa fa-calendar"></i>
-				<input type="date" required="">
+				<input type="date" id="dateInput" required>
 				</label>
 				</section>
 				<section class="col col-6">
-				<label class="time">Select Time</label>
+				<label id="time"class="time">Select Time</label>
 				<label class="select">
 				<select name="Time" required="">
 				<option value="" selected="" disabled="">Select Time</option>
@@ -406,6 +408,7 @@
 	<!-- Java scripts -->
 	<script type="text/javascript" src="assets/plugins/jquery/jquery.min.js"></script>
 	<script type="text/javascript">
+		
 	function showMsg(flag){
 	if(flag==0){
 	$('.successBox').css('display', 'block');
@@ -414,6 +417,66 @@
 	}
 	}
 	</script>
+	<script>
+        // JavaScript to handle form submission
+        document.getElementById("appoitmentForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+
+			function formatDate(date) {
+          const day = date.getDate().toString().padStart(2, '0');
+         const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based, so we add 1
+         const year = date.getFullYear();
+         return `${day}/${month}/${year}`;
+}
+
+// Get the date value from the input field
+const dateInput = document.getElementById("dateInput");
+const selectedDate = new Date(dateInput.value);
+
+
+const departmentSelect = document.getElementById("departmentSelect");
+    const selectedDepartment = departmentSelect.value;
+
+
+// Format the date as "dd/mm/yyyy"
+const formattedDate = formatDate(selectedDate);
+
+            // Create a JSON object from the form data
+            const formData = {
+				name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    purpose: document.getElementById("purpose").value,
+    phonenumber: document.getElementById("number").value,
+    dep: selectedDepartment, 
+   date: formattedDate,
+    time: document.querySelector("[name='Time']").value,
+				
+                //age: parseInt(document.getElementById("age").value),
+                //phonenumber: parseInt(document.getElementById("phonenumber").value),
+            };
+			const jsonData = JSON.stringify(formData);
+			
+            // Send a POST request to your Go backend
+            fetch("/appoitnment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the backend, e.g., show a success message
+                alert("Customer profile created successfully!");
+                // You can also redirect to another page or perform other actions here
+            })
+            .catch(error => {
+                // Handle errors, e.g., display an error message
+                alert("Error creating customer profile: " + error.message);
+            });
+        });
+    </script>
 
 </body>
 </html>
