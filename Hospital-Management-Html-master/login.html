@@ -147,11 +147,17 @@
 
 				<!-- Appointment -->
 				<li class="mega-menu-fullwidth">
-				<a href="appointment.html">
+				<a href="login.html">
 				BOOK APPOINTMENT
 				</a>
 
 				</li>
+				<li class="mega-menu-fullwidth">
+					<a href="admin.html">
+						ADMIN
+					</a>
+	
+					</li>
 				<!-- End Appointment -->
 
 				</ul>
@@ -353,11 +359,13 @@
 		.then(data => {
 			// Handle the response from the backend, e.g., show a success message or redirect to another page
 			alert("Login successful!");
+			window.location.replace("appointment.html");
+
 			// You can add further logic here, like redirecting to a dashboard page
 		})
 		.catch(error => {
 			// Handle errors, e.g., display an error message
-			alert("Error during login: " + error.message);
+			alert("Error during login: Enter valid Email and Passsword or Register ");
 		});
 	});
 </script>

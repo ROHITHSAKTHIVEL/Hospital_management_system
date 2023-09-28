@@ -148,11 +148,18 @@
 
 					<!-- Appointment -->
 					<li class="mega-menu-fullwidth">
-					<a href="appointment.html">
+					<a href="login.html">
 					BOOK APPOINTMENT
 					</a>
 
 					</li>
+
+					<li class="mega-menu-fullwidth">
+						<a href="admin.html">
+							ADMIN
+						</a>
+		
+						</li>
 					<!-- End Appointment -->
 
 					</ul>
@@ -172,60 +179,56 @@
 					<div class="headline"><h2>Contact Form</h2></div>
 
 
-					<form onsubmit="showMsg(0);return false;" method="post" class="sky-form sky-changes-3">
-					<fieldset>
-					<div class="row">
-					<section class="col col-6">
-					<label class="label">Name</label>
-					<label class="input">
-					<i class="icon-append fa fa-user"></i>
-					<input type="text" name="name" id="name">
-					</label>
-					</section>
-					<section class="col col-6">
-					<label class="label">E-mail</label>
-					<label class="input">
-					<i class="icon-append fa fa-envelope-o"></i>
-					<input type="email" name="email" id="email">
-					</label>
-					</section>
-					</div>
-
-					<section>
-					<label class="label">Subject</label>
-					<label class="input">
-					<i class="icon-append fa fa-tag"></i>
-					<input type="text" name="subject" id="subject">
-					</label>
-					</section>
-
-					<section>
-					<label class="label">Mobile Number</label>
-					<label class="input">
-					<i class="icon-append fa fa-phone"></i>
-					<input type="text" name="number" id="number">
-					</label>
-					</section> 
-
-					<section>
-					<label class="label">Message</label>
-					<label class="textarea">
-					<i class="icon-append fa fa-comment"></i>
-					<textarea rows="4" name="message" id="message"></textarea>
-					</label>
-					</section>
-
-					</fieldset>
-						<div class="alert alert-success successBox" style="width: 90%; margin-left: 30px;">
-				<button type="button" class="close" onclick="showMsg(1);">×</button>
-				<strong style="font-size: 16px;">Congratulations!</strong><span class="alert-link"> Your Message Has been sent!</span>
-				</div>
-
-					<footer>
-					<button type="submit" class="btn-u">Send message</button>
-					</footer>
-
-					
+					<form id="form" method="post" class="sky-form sky-changes-3">
+						<fieldset>
+							<div class="row">
+								<section class="col col-6">
+									<label class="label" for="name">Name</label>
+									<label class="input">
+										<i class="icon-append fa fa-user"></i>
+										<input type="text" name="name" id="name" required>
+									</label>
+								</section>
+								<section class="col col-6">
+									<label class="label" for="email">E-mail</label>
+									<label class="input">
+										<i class="icon-append fa fa-envelope-o"></i>
+										<input type="email" name="email" id="email" required>
+									</label>
+								</section>
+							</div>
+				
+							<section>
+								<label class="label" for="subject">Subject</label>
+								<label class="input">
+									<i class="icon-append fa fa-tag"></i>
+									<input type="text" name="subject" id="subject" required>
+								</label>
+							</section>
+				
+							<section>
+								<label class="label" for="number">Mobile Number</label>
+								<label class="input">
+									<i class="icon-append fa fa-phone"></i>
+									<input type="text" name="number" id="number" required>
+								</label>
+							</section>
+				
+							<section>
+								<label class="label" for="message">Message</label>
+								<label class="textarea">
+									<i class="icon-append fa fa-comment"></i>
+									<textarea rows="4" name="message" id="message" required></textarea>
+								</label>
+							</section>
+						</fieldset>
+						<div class="alert alert-success successBox" style="width: 90%; margin-left: 30px; display: none;">
+							<button type="button" class="close" onclick="showMsg(1);">×</button>
+							<strong style="font-size: 16px;">Congratulations!</strong><span class="alert-link"> Your Message Has been sent!</span>
+						</div>
+						<footer>
+							<button type="submit" class="btn-u">Send message</button>
+						</footer>
 					</form>
 					</div><!--/col-md-9-->
 
@@ -385,6 +388,42 @@
 	}
 	}
 	</script>
+	  <script>
+        // JavaScript to handle form submission
+        document.getElementById("form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Create a JSON object from the form data
+            const formData = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                subject: document.getElementById("subject").value,
+                message: document.getElementById("message").value,
+                phone: document.getElementById("number").value,
+            };
+
+            // Send a POST request to your Go backend
+            fetch("/feedback", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the backend, e.g., show a success message
+                alert("Customer Feedback is Received successfully!");
+                showMsg(1); // Display success message
+                // You can also redirect to another page or perform other actions here
+            })
+            .catch(error => {
+                // Handle errors, e.g., display an error message
+                alert("Error creating customer feedback: " + error.message);
+            });
+        });
+
+    </script>
 
 </body>
 </html>

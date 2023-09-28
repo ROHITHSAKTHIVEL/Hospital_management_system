@@ -146,11 +146,20 @@
 
 				<!-- Appointment -->
 				<li class="mega-menu-fullwidth">
-				<a href="appointment.html">
+				<a href="login.html">
 				BOOK APPOINTMENT
 				</a>
 
 				</li>
+
+				<li class="mega-menu-fullwidth">
+					<a href="admin.html">
+						ADMIN
+					</a>
+	
+					</li>
+
+					
 				<!-- End Appointment -->
 
 				</ul>
@@ -351,42 +360,51 @@
 	}
 	}
 	</script>
-	  <script>
-        // JavaScript to handle form submission
-        document.getElementById("customerForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            // Create a JSON object from the form data
-            const formData = {
-                fname: document.getElementById("fname").value,
+	   <script>
+		// JavaScript to handle form submission
+		document.getElementById("customerForm").addEventListener("submit", function (event) {
+			event.preventDefault();
+	
+			// Create a JSON object from the form data
+			const formData = {
+				fname: document.getElementById("fname").value,
 				lname: document.getElementById("lname").value,
 				email: document.getElementById("email").value,
 				password: document.getElementById("pass").value,
 				confirmpassword: document.getElementById("confirmpass").value,
-                //age: parseInt(document.getElementById("age").value),
-                //phonenumber: parseInt(document.getElementById("phonenumber").value),
-            };
-
-            // Send a POST request to your Go backend
-            fetch("/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response from the backend, e.g., show a success message
-                alert("Customer profile created successfully!");
-                // You can also redirect to another page or perform other actions here
-            })
-            .catch(error => {
-                // Handle errors, e.g., display an error message
-                alert("Error creating customer profile: " + error.message);
-            });
-        });
-    </script>
+			};
+	
+			// Send a POST request to your Go backend
+			fetch("/create", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(formData),
+			})
+			.then(response => {
+				console.log(response.status);
+				if (response.status === 200) {
+					// Success, profile created
+					console.log("200");
+					alert("Customer profile created successfully!");
+					// You can also redirect to another page or perform other actions here
+				} else if (response.status === 400) {
+					// Error, user already exists
+					console.log("400");
+					alert("Error:  Email already exists.");
+				} else {
+					// Handle other response statuses here
+					alert("Error: Something went wrong.");
+				}
+			})
+			.catch(error => {
+				// Handle errors, e.g., display an error message
+				alert("Error creating customer profile: " + error.message);
+			});
+		});
+	</script>
+	
 
 </body>
 </html>
